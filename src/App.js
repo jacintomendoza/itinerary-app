@@ -2,7 +2,7 @@ import Itinerary from './components/itinerary/itinerary'
 
 function App() {
   return (
-    <div>
+    <div style={{backgroundColor: 'green', height: '100vh'}}>
       <Itinerary />
     </div>
   );
