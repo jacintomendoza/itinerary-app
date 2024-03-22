@@ -1,50 +1,17 @@
-import { Grid, Card, CardContent, Typography } from '@mui/material';
+import { Card, CardContent, Typography, Grid } from '@mui/material';
+import ItineraryPlan from './itinerary-plan/itinerary-plan'
+import ItineraryPictures from './itinerary-pictures/itinerary-pictures'
 
 function Itinerary() {
     return (
         <Card style={{ backgroundColor: 'grey', minHeight: '500px' }}>
-            <CardContent>
-                <Typography variant="h2" component="div" align='center' gutterBottom>
-                    Denver
-                </Typography>
-                <Grid container spacing={2} alignItems='stretch' style={{ minHeight: '400px'}}>
-                    {/* Card Location */}
-                    <Grid item xs={1}>
-                        <Card style={{ height: '100%' }}>
-                            <CardContent>
-                                <Typography variant="h6" align='center'>Location</Typography>
-                                <Typography color="text.secondary" align='center'>
-                                    Dallas<br />to<br />Denver
-                                </Typography>
-                            </CardContent>
-                        </Card>
-                    </Grid>
-                    {/* Card Day & Itinerary */}
-                    <Grid item xs={6}>
-                        <Card style={{ height: '100%' }}>
-                            <CardContent>
-                                <Typography variant="h6" align='center'>
-                                    Day & Itinerary
-                                </Typography>
-                                <Typography color="text.secondary">
-                                    Seperate by day and Itinerary
-                                </Typography>
-                            </CardContent>
-                        </Card>
-                    </Grid>
+            <CardContent style={{ height: '100%' }}>
+                <Typography variant="h2" component="div" align='center' gutterBottom>Denver</Typography>
+                <Grid container spacing={2} alignItems='stretch' style={{ minHeight: '400px' }}>
+                    {/* <Grid item xs={1}><ItineraryLocation /></Grid> */}
+                    <Grid item xs={6}><ItineraryPlan /></Grid>
                     {/* Card Pictures */}
-                    <Grid item xs={5}>
-                        <Card style={{ height: '100%' }}>
-                            <CardContent>
-                                <Typography variant="h6" align='center'>
-                                    Pictures
-                                </Typography>
-                                <Typography color="text.secondary">
-                                    Dallas to Denver
-                                </Typography>
-                            </CardContent>
-                        </Card>
-                    </Grid>
+                    <Grid item xs={6}><ItineraryPictures /></Grid>
                 </Grid>
             </CardContent>
         </Card>
