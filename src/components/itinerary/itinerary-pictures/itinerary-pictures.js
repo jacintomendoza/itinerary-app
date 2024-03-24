@@ -6,7 +6,7 @@ function ItineraryPictures() {
             <CardContent>
                 <Typography variant="h6" align='center'>Pictures</Typography>
                 <div style={{ maxWidth: '100%', maxHeight: '100%', overflow: 'hidden' }}>
-                    <img src="https://thispersondoesnotexist.com/" alt="Slide 3" style={{ maxWidth: '100%', maxHeight: '100%' }} />
+                    <img src="https://thispersondoesnotexist.com/" alt="picture" style={{ maxWidth: '100%', maxHeight: '100%' }} />
                 </div>
             </CardContent>
         </Card>
