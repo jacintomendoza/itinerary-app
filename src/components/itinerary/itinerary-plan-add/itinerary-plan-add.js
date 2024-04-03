@@ -1,34 +1,42 @@
-import { Card, CardContent, Typography, TextField, Button, Divider, IconButton } from '@mui/material';
+import { Card, CardContent, Typography, TextField, Button, Divider, IconButton, Box } from '@mui/material';
 import { useState } from 'react';
 import useItineraryPlanContext from '../../../hooks/use-hooks-context';
 
 function ItineraryPlanAdd({ itineraryDetail }) {
 
-    // const { deleteItineraryPlanById, addItineraryPlan } = useItineraryPlanContext();
+    const [itineraryTitle, setItineraryTitle] = useState('');
+    const [itinerary, setItinerary] = useState([]);
 
-    const { title, days } = itineraryDetail;
-    
-    const [description, setDescription] = useState('');
-    const [plans, setPlans] = useState([]);
+    const handleAddDay = () => {
+        setItinerary([...itinerary, { day: `Day ${itinerary.length + 1}`, plans: [] }]);
+    };
 
-    const handleChange = (index, field, value) => {
-        const updatedPlans = [...plans];
-        updatedPlans[index][field] = value;
-        setPlans(updatedPlans);
-    }
+    const handleAddPlan = (dayIndex) => {
+        setItinerary((prevItinerary) => {
+            const newItinerary = [...prevItinerary];
+            newItinerary[dayIndex].plans.push({ description: '', time: '', url: '' });
+            return newItinerary;
+        });
+    };
 
-    const handleAddPlan = () => {
-        const newPlan = {
-            time: '',
-            description: '',
-            url: ''
-        };
-        setPlans([...plans, newPlan]);
-    }
+    const handlePlanChange = (dayIndex, planIndex, field, value) => {
+        setItinerary((prevItinerary) => {
+            const newItinerary = [...prevItinerary];
+            if (field === 'description') {
+                newItinerary[dayIndex].plans[planIndex].description = value;
+            } else if (field === 'time') {
+                newItinerary[dayIndex].plans[planIndex].time = value;
+            } else if (field === 'url') {
+                newItinerary[dayIndex].plans[planIndex].url = value;
+            }
+            return newItinerary;
+        });
+    };
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        console.log(plans);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log({ title: itineraryTitle, itinerary });
     };
 
     // TODO: Add delete function
@@ -37,28 +45,63 @@ function ItineraryPlanAdd({ itineraryDetail }) {
     return (
         <Card style={{ height: '100%' }}>
             <CardContent>
+                <Typography variant="h4" align='center'>Add Itinerary</Typography>
                 <form onSubmit={handleSubmit}>
-                    <Typography variant="h5" align='center'>Add Itinerary</Typography>
-                    <Typography variant="h6">Trip</Typography>
-                    <Divider sx={{ marginBottom: '20px' }} />
-                    <TextField label="title" />
-                    <Typography variant="h6">Days</Typography>
-                    <Divider sx={{ marginBottom: '20px' }} />
-                    <TextField label="location" />
-                    <TextField label="date" />
-                    <Typography variant="h6">Plans</Typography>
-                    <Divider sx={{ marginBottom: '20px' }} />
-                    {}
-                    {plans.map((plan, index) => (
-                        <div key={index}>
-                            <Typography variant="h6">Plan {index + 1}</Typography>
-                            <TextField label="time" value={plan.time} onChange={(e) => handleChange(index, 'time', e.target.value)} />
-                            <TextField label="description" value={plan.description} onChange={(e) => handleChange(index, 'description', e.target.value)} />
-                            <TextField label="url" value={plan.url} onChange={(e) => handleChange(index, 'url', e.target.value)} />
+                    <TextField
+                        label="Title"
+                        value={itineraryTitle}
+                        onChange={(e) => setItineraryTitle(e.target.value)}
+                        fullWidth
+                        margin="normal"
+                    />
+                    {itinerary.map((day, dayIndex) => (
+                        <div key={dayIndex}>
+                            <Box component='div' textAlign="left" sx={{ border: '1px solid grey', backgroundColor: 'yellow' }}>
+                            <Typography variant="h5">{day.day}</Typography>
+                            </Box>
+                            <Divider />
+                            {day.plans.map((plan, planIndex) => (
+                                <div key={planIndex}>
+                                    <Typography variant="h6">Plan {planIndex + 1}</Typography>
+
+                                    <TextField
+                                        label={`Description`}
+                                        value={plan.description}
+                                        onChange={(e) => handlePlanChange(dayIndex, planIndex, 'description', e.target.value)}
+                                        fullWidth
+                                        margin="normal"
+                                    />
+
+                                    <TextField
+                                        label={`Time`}
+                                        value={plan.time}
+                                        onChange={(e) => handlePlanChange(dayIndex, planIndex, 'time', e.target.value)}
+                                        fullWidth
+                                        margin="normal"
+                                        className="text-field"
+                                    />
+
+                                    <TextField
+                                        label={`URL`}
+                                        value={plan.url}
+                                        onChange={(e) => handlePlanChange(dayIndex, planIndex, 'url', e.target.value)}
+                                        fullWidth
+                                        margin="normal"
+                                        className="text-field"
+                                    />
+                                </div>
+                            ))}
+
+
+                            <Button onClick={() => handleAddPlan(dayIndex)}>Add Plan</Button>
                         </div>
                     ))}
-                    <Button onClick={handleAddPlan} aria-label="add plan">Add Plan</Button>
-                    <Button type="submit" variant="contained" color="primary">Save Changes</Button>
+                    <Button onClick={handleAddDay}>Add Day</Button>
+                    <Box mt={2}>
+                        <Button type="submit" variant="contained" color="primary">
+                            Submit
+                        </Button>
+                    </Box>
                 </form>
             </CardContent>
         </Card>
