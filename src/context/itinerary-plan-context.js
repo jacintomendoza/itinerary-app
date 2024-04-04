@@ -4,13 +4,13 @@ import axios from 'axios';
 const ItineraryPlanContext = createContext();
 
 function Provider({ children }) {
-    const [itineraryDetail, setItineraryPlan] = useState(null);
+    const [itineraryDetail, setItineraryDetail] = useState(null);
 
     useEffect(() => {
         const fetchItinerary = async () => {
             try {
                 const response = await axios.get('https://itinerary-app.netlify.app/api/itinerary');
-                setItineraryPlan(response.data);
+                setItineraryDetail(response.data);
             } catch (error) {
                 console.error('Error fetching itinerary:', error);
             }
@@ -18,32 +18,43 @@ function Provider({ children }) {
         fetchItinerary();
     }, []);
 
-    const updateItineraryPlan = (newPlan) => {
-        setItineraryPlan(newPlan);
-    };
+    // CREATE
+    const addItineraryPlan = async (newPlan) => {
+        try {
+            const response = await axios.post('https://itinerary-app.netlify.app/api/itinerary', newPlan);
+            // setItineraryDetail(response.data);
+        } catch (error) {
+            console.error('Error creating itinerary plan:', error);
+        }
+    }
 
     // UPDATE
     const editItineraryPlanById = async (id, updatedPlan) => {
         try {
             const response = await axios.put(`https://itinerary-app.netlify.app/api/itinerary/${id}`, updatedPlan);
-            setItineraryPlan(response.data);
+            setItineraryDetail(response.data);
         } catch (error) {
             console.error('Error updating itinerary plan:', error);
         }
+    };
+
+    // EDIT
+    const updateItineraryPlan = (newPlan) => {
+        setItineraryDetail(newPlan);
     };
 
     // DELETE
     const deleteItineraryPlanById = async (id) => {
         try {
             await axios.delete(`https://itinerary-app.netlify.app/api/itinerary/${id}`);
-            setItineraryPlan(null); // or update the itinerary plan as needed
+            setItineraryDetail(null);
         } catch (error) {
             console.error('Error deleting itinerary plan:', error);
         }
     };
 
     return (
-        <ItineraryPlanContext.Provider value={{ itineraryDetail, updateItineraryPlan, editItineraryPlanById, deleteItineraryPlanById }}>
+        <ItineraryPlanContext.Provider value={{ itineraryDetail, updateItineraryPlan, editItineraryPlanById, deleteItineraryPlanById, addItineraryPlan }}>
             {children}
         </ItineraryPlanContext.Provider>
     );

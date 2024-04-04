@@ -4,8 +4,6 @@ const moment = require('moment');
 
 function ItineraryPlan({ itineraryDetail, editClicked }) {
 
-
-
     return (
         <Card style={{ height: '100%' }}>
             <CardContent>

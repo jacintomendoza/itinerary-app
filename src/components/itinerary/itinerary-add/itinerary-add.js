@@ -1,8 +1,10 @@
-import { Card, CardContent, Typography, TextField, Button, Divider, IconButton, Box } from '@mui/material';
+import { Card, CardContent, Typography, TextField, Button, Divider, Box } from '@mui/material';
 import { useState } from 'react';
 import useItineraryPlanContext from '../../../hooks/use-hooks-context';
 
-function ItineraryPlanAdd({ itineraryDetail }) {
+function ItineraryAdd() {
+
+    const { addItineraryPlan } = useItineraryPlanContext();
 
     const [itineraryTitle, setItineraryTitle] = useState('');
     const [itinerary, setItinerary] = useState([]);
@@ -33,17 +35,23 @@ function ItineraryPlanAdd({ itineraryDetail }) {
         });
     };
 
-
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log({ title: itineraryTitle, itinerary });
+        console.log("Loading here");
+        try {
+            await addItineraryPlan({ title: itineraryTitle, itinerary });
+            // Reset form after successful submission
+            setItineraryTitle('');
+            setItinerary([]);
+        } catch (error) {
+            console.error('Error adding itinerary plan:', error);
+        } finally {
+            console.log("Finish here");
+        }
     };
 
-    // TODO: Add delete function
-    // deleteItineraryPlanById("660116dcc97f623642699034");
-
     return (
-        <Card style={{ height: '100%' }}>
+        <Card style={{ height: '100%', backgroundColor: 'pink' }}>
             <CardContent>
                 <Typography variant="h4" align='center'>Add Itinerary</Typography>
                 <form onSubmit={handleSubmit}>
@@ -57,13 +65,12 @@ function ItineraryPlanAdd({ itineraryDetail }) {
                     {itinerary.map((day, dayIndex) => (
                         <div key={dayIndex}>
                             <Box component='div' textAlign="left" sx={{ border: '1px solid grey', backgroundColor: 'yellow' }}>
-                            <Typography variant="h5">{day.day}</Typography>
+                                <Typography variant="h5">{day.day}</Typography>
                             </Box>
                             <Divider />
                             {day.plans.map((plan, planIndex) => (
                                 <div key={planIndex}>
                                     <Typography variant="h6">Plan {planIndex + 1}</Typography>
-
                                     <TextField
                                         label={`Description`}
                                         value={plan.description}
@@ -71,7 +78,6 @@ function ItineraryPlanAdd({ itineraryDetail }) {
                                         fullWidth
                                         margin="normal"
                                     />
-
                                     <TextField
                                         label={`Time`}
                                         value={plan.time}
@@ -80,7 +86,6 @@ function ItineraryPlanAdd({ itineraryDetail }) {
                                         margin="normal"
                                         className="text-field"
                                     />
-
                                     <TextField
                                         label={`URL`}
                                         value={plan.url}
@@ -91,8 +96,6 @@ function ItineraryPlanAdd({ itineraryDetail }) {
                                     />
                                 </div>
                             ))}
-
-
                             <Button onClick={() => handleAddPlan(dayIndex)}>Add Plan</Button>
                         </div>
                     ))}
@@ -108,4 +111,4 @@ function ItineraryPlanAdd({ itineraryDetail }) {
     );
 }
 
-export default ItineraryPlanAdd;
+export default ItineraryAdd;
