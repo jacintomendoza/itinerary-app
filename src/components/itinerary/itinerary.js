@@ -1,9 +1,11 @@
 import { Grid, Card, CardContent, Typography, Button } from '@mui/material';
 import ItineraryPlan from './itinerary-plan/itinerary-plan';
 import ItineraryPictures from './itinerary-pictures/itinerary-pictures';
+import ItineraryAdd from './itinerary-add/itinerary-add';
+import ItineraryPlanEdit from './itinerary-plan/itinerary-plan-edit';
 import useItineraryPlanContext from '../../hooks/use-hooks-context';
 import { useState } from 'react';
-import ItineraryAdd from './itinerary-add/itinerary-add';
+import EditIcon from '@mui/icons-material/Edit';
 
 function Itinerary() {
     const { itineraryDetail } = useItineraryPlanContext();
@@ -14,21 +16,21 @@ function Itinerary() {
     //     // Logic to update the itinerary detail state or send a request to update the backend
     // };
 
-    const onAddClicked = () => {
-        setAddView(true);
+    const handleEditClicked = () => {
+        setEditView(!editView);
     }
 
-    const onEditClicked = () => {
-        setEditView(!editView);
-    };
+    const onAddClicked = () => {
+        setAddView(!addView);
+    }
 
     if (!itineraryDetail) {
         return <div>Loading...</div>;
     }
 
-    let addContent = ''
+    let addContent = '';
     if (addView) {
-        addContent = <ItineraryAdd />;
+        addContent = <ItineraryAdd closeAddClicked={onAddClicked} />;
     }
 
     return (
@@ -44,10 +46,14 @@ function Itinerary() {
             {itineraryDetail.map((itinerary) => (
                 <Card key={itinerary._id} style={{ backgroundColor: 'grey', marginBottom: '20px' }}>
                     <CardContent style={{ height: '100%' }}>
-                        <Typography variant="h2" component="div" align='center' gutterBottom>{itinerary.title}</Typography>
+                        <Typography variant="h2" component="div" align='center' gutterBottom>{itinerary.title} <EditIcon style={{ cursor: 'pointer' }} onClick={handleEditClicked} /></Typography>
                         <Grid container spacing={2} alignItems='stretch' style={{ minHeight: '400px' }}>
                             {/* Card Plan */}
-                            <Grid item xs={6}><ItineraryPlan itineraryDetail={itinerary} editClicked={onEditClicked} /></Grid>
+                            {editView ? (
+                                <Grid item xs={6}><ItineraryPlanEdit itineraryDetail={itinerary} /></Grid>
+                            ) : (
+                                <Grid item xs={6}><ItineraryPlan itineraryDetail={itinerary} /></Grid>
+                            )}
                             {/* Card Pictures */}
                             <Grid item xs={6}><ItineraryPictures /></Grid>
                         </Grid>

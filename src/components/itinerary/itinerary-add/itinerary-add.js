@@ -1,11 +1,10 @@
-import { Card, CardContent, Typography, TextField, Button, Divider, Box } from '@mui/material';
+import { Card, CardContent, Typography, TextField, Button, Divider, Box, IconButton } from '@mui/material';
+import { Close } from '@mui/icons-material';
 import { useState } from 'react';
 import useItineraryPlanContext from '../../../hooks/use-hooks-context';
 
-function ItineraryAdd() {
-
+function ItineraryAdd({ closeAddClicked }) {
     const { addItineraryPlan } = useItineraryPlanContext();
-
     const [itineraryTitle, setItineraryTitle] = useState('');
     const [itinerary, setItinerary] = useState([]);
 
@@ -53,6 +52,11 @@ function ItineraryAdd() {
     return (
         <Card style={{ height: '100%', backgroundColor: 'pink' }}>
             <CardContent>
+                <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <IconButton onClick={closeAddClicked}>
+                        <Close />
+                    </IconButton>
+                </Box>
                 <Typography variant="h4" align='center'>Add Itinerary</Typography>
                 <form onSubmit={handleSubmit}>
                     <TextField

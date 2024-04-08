@@ -1,13 +1,12 @@
 import { Card, CardContent, Typography, Box } from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
 const moment = require('moment');
 
-function ItineraryPlan({ itineraryDetail, editClicked }) {
+function ItineraryPlan({ itineraryDetail }) {
 
     return (
         <Card style={{ height: '100%' }}>
             <CardContent>
-                <Typography variant="h6" align='center'>Day & Itinerary <EditIcon style={{ cursor: 'pointer' }} onClick={editClicked} /></Typography>
+                <Typography variant="h6" align='center'>Day & Itinerary</Typography>
                 <Box borderBottom={1} />
                 <Typography color="text.secondary" component="div">
                     <div style={{ padding: '0px 5px 0px 5px', background: 'green' }}>
