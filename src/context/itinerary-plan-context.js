@@ -7,22 +7,26 @@ function Provider({ children }) {
     const [itineraryDetail, setItineraryDetail] = useState(null);
 
     useEffect(() => {
-        const fetchItinerary = async () => {
-            try {
-                const response = await axios.get('https://itinerary-app.netlify.app/api/itinerary');
-                setItineraryDetail(response.data);
-            } catch (error) {
-                console.error('Error fetching itinerary:', error);
-            }
-        };
         fetchItinerary();
     }, []);
+
+    const fetchItinerary = async () => {
+        try {
+            const response = await axios.get('https://itinerary-app.netlify.app/api/itinerary');
+            setItineraryDetail(response.data);
+        } catch (error) {
+            console.error('Error fetching itinerary:', error);
+        }
+    };
+
+    const getItineraryDetail = async () => {
+        await fetchItinerary();
+    };
 
     // CREATE
     const addItineraryPlan = async (newPlan) => {
         try {
-            const response = await axios.post('https://itinerary-app.netlify.app/api/itinerary', newPlan);
-            // setItineraryDetail(response.data);
+            await axios.post('https://itinerary-app.netlify.app/api/itinerary', newPlan);
         } catch (error) {
             console.error('Error creating itinerary plan:', error);
         }
@@ -54,7 +58,7 @@ function Provider({ children }) {
     };
 
     return (
-        <ItineraryPlanContext.Provider value={{ itineraryDetail, updateItineraryPlan, editItineraryPlanById, deleteItineraryPlanById, addItineraryPlan }}>
+        <ItineraryPlanContext.Provider value={{ itineraryDetail, updateItineraryPlan, editItineraryPlanById, deleteItineraryPlanById, addItineraryPlan, getItineraryDetail }}>
             {children}
         </ItineraryPlanContext.Provider>
     );

@@ -3,16 +3,18 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from 'dayjs';
+import useItineraryPlanContext from '../../../hooks/use-hooks-context';
+
 const moment = require('moment');
 
 function ItineraryPlanEdit({ itineraryDetail }) {
 
+    const { editItineraryPlanById, getItineraryDetail } = useItineraryPlanContext();
 
-
-    const handleSave = (e) => {
+    const handleSave = async (e) => {
         e.preventDefault();
-        // Handle saving the itinerary detail data
-        console.log(itineraryDetail);
+        await editItineraryPlanById(itineraryDetail._id, itineraryDetail);
+        await getItineraryDetail();
     };
 
     return (
@@ -27,24 +29,14 @@ function ItineraryPlanEdit({ itineraryDetail }) {
                                 <div key={day.id}>
                                     <Box component='div' textAlign="left" sx={{ border: '1px solid grey', backgroundColor: 'yellow' }}>
                                         <div className="container" style={{ display: 'flex', justifyContent: 'space-between' }}>
-
-                                            {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                            <LocalizationProvider dateAdapter={AdapterDayjs}>
                                                 <DatePicker
                                                     label="Date"
                                                     defaultValue={dayjs(moment(day.date).toDate())}
-                                                    onChange={(e) => {
-                                                        itineraryDetail.days[dayIndex].date = moment(e).toISOString();
-                                                    }}
-                                                renderInput={(params) => <TextField {...params} />}
-                                                />
-                                            </LocalizationProvider> */}
-                                            {/* <TextField
-                                                label="Date"
-                                                onChange={(e) => {
-                                                    itineraryDetail.days[dayIndex].date = moment(e).toISOString();
-                                                }}
-                                            /> */}
-
+                                                    onChange={(date) => {
+                                                        itineraryDetail.days[dayIndex].date = date.toISOString();
+                                                    }} />
+                                            </LocalizationProvider>
                                             <TextField
                                                 label="Location"
                                                 defaultValue={day.location}
@@ -53,8 +45,7 @@ function ItineraryPlanEdit({ itineraryDetail }) {
                                                 onChange={(e) => {
                                                     const value = e.target.value;
                                                     itineraryDetail.days[dayIndex].location = value;
-                                                }}
-                                            />
+                                                }} />
                                         </div>
                                     </Box>
                                     {day.plans.map((plan, planIndex) => (
@@ -66,7 +57,6 @@ function ItineraryPlanEdit({ itineraryDetail }) {
                                                 fullWidth
                                                 onChange={(e) => {
                                                     const value = e.target.value;
-                                                    // Update the time in itineraryDetail
                                                     itineraryDetail.days[dayIndex].plans[planIndex].time = value;
                                                 }}
                                             />
@@ -77,7 +67,6 @@ function ItineraryPlanEdit({ itineraryDetail }) {
                                                 fullWidth
                                                 onChange={(e) => {
                                                     const value = e.target.value;
-                                                    // Update the description in itineraryDetail
                                                     itineraryDetail.days[dayIndex].plans[planIndex].description = value;
                                                 }}
                                             />

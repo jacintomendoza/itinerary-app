@@ -4,7 +4,7 @@ import { useState } from 'react';
 import useItineraryPlanContext from '../../../hooks/use-hooks-context';
 
 function ItineraryAdd({ closeAddClicked }) {
-    const { addItineraryPlan } = useItineraryPlanContext();
+    const { addItineraryPlan, getItineraryDetail } = useItineraryPlanContext();
     const [itineraryTitle, setItineraryTitle] = useState('');
     const [itinerary, setItinerary] = useState([]);
 
@@ -42,6 +42,7 @@ function ItineraryAdd({ closeAddClicked }) {
             // Reset form after successful submission
             setItineraryTitle('');
             setItinerary([]);
+            await getItineraryDetail();
         } catch (error) {
             console.error('Error adding itinerary plan:', error);
         } finally {
