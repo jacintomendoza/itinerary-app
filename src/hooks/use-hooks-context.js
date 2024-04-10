@@ -1,8 +1,8 @@
 import { useContext } from "react";
-import { ItineraryPlanContext } from "../context/itinerary-plan-context";
+import { ItineraryContext } from "../context/itinerary-context";
 
-function useItineraryPlanContext() {
-    return useContext(ItineraryPlanContext);
+function useItineraryContext() {
+    return useContext(ItineraryContext);
 }
 
-export default useItineraryPlanContext;
+export default useItineraryContext;

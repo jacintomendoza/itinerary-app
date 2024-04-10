@@ -1,10 +1,10 @@
 import { Card, CardContent, Typography, TextField, Button, Divider, Box, IconButton } from '@mui/material';
 import { Close } from '@mui/icons-material';
 import { useState } from 'react';
-import useItineraryPlanContext from '../../../hooks/use-hooks-context';
+import useItineraryContext from '../../../hooks/use-hooks-context';
 
 function ItineraryAdd({ closeAddClicked }) {
-    const { addItineraryPlan, getItineraryDetail } = useItineraryPlanContext();
+    const { addItinerary, getItineraryArray } = useItineraryContext();
     const [itineraryTitle, setItineraryTitle] = useState('');
     const [itinerary, setItinerary] = useState([]);
 
@@ -38,11 +38,10 @@ function ItineraryAdd({ closeAddClicked }) {
         e.preventDefault();
         console.log("Loading here");
         try {
-            await addItineraryPlan({ title: itineraryTitle, itinerary });
-            // Reset form after successful submission
+            await addItinerary({ title: itineraryTitle, itinerary });
             setItineraryTitle('');
             setItinerary([]);
-            await getItineraryDetail();
+            await getItineraryArray();
         } catch (error) {
             console.error('Error adding itinerary plan:', error);
         } finally {

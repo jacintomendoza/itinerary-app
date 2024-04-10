@@ -1,7 +1,7 @@
 import { Card, CardContent, Typography, Box } from '@mui/material';
 const moment = require('moment');
 
-function ItineraryPlan({ itineraryDetail }) {
+function ItineraryPlan({ itinerary }) {
 
     return (
         <Card style={{ height: '100%' }}>
@@ -10,7 +10,7 @@ function ItineraryPlan({ itineraryDetail }) {
                 <Box borderBottom={1} />
                 <Typography color="text.secondary" component="div">
                     <div style={{ padding: '0px 5px 0px 5px', background: 'green' }}>
-                        {itineraryDetail.days.map((day) => (
+                        {itinerary.days.map((day) => (
                             <div key={day.id}>
                                 <Box component='div' textAlign="left" sx={{ border: '1px solid grey', backgroundColor: 'yellow' }}>
                                     <div className="container" style={{ display: 'flex', justifyContent: 'space-between' }}>
