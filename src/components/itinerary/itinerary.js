@@ -4,23 +4,23 @@ import ItineraryPictures from './itinerary-pictures/itinerary-pictures';
 import ItineraryAdd from './itinerary-add/itinerary-add';
 import ItineraryPlanEdit from './itinerary-plan/itinerary-plan-edit';
 import useItineraryPlanContext from '../../hooks/use-hooks-context';
-import { useState } from 'react';
+import { useState, useRef  } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 function Itinerary() {
-    const { itineraryDetail, deleteItineraryPlanById, getItineraryDetail } = useItineraryPlanContext();
-    const [editView, setEditView] = useState(false);
+    const { itineraryDetail, deleteItineraryDetailById } = useItineraryPlanContext();
     const [addView, setAddView] = useState(false);
+    const [editId, setEditId] = useState(null);
 
-    const handleEditClicked = () => {
-        setEditView(!editView);
+    const handleEditClicked = (id) => {
+        setEditId(id === editId ? null : id);
     }
 
     const handleDeleteClicked = async (id) => {
-        await deleteItineraryPlanById(id);
-        await getItineraryDetail();
+        await deleteItineraryDetailById(id);
     }
+    
 
     const onAddClicked = () => {
         console.log(itineraryDetail);
@@ -51,12 +51,12 @@ function Itinerary() {
                 <Card key={itinerary._id} style={{ backgroundColor: 'grey', marginBottom: '20px' }}>
                     <CardContent style={{ height: '100%' }}>
                         <Typography variant="h2" component="div" align='center' gutterBottom>{itinerary.title}
-                            <EditIcon style={{ cursor: 'pointer' }} onClick={handleEditClicked} />
+                            <EditIcon style={{ cursor: 'pointer' }} onClick={() => handleEditClicked(itinerary._id)} />
                             <DeleteIcon style={{ cursor: 'pointer' }} onClick={() => handleDeleteClicked(itinerary._id)} /></Typography>
                         <Grid container spacing={2} alignItems='stretch' style={{ minHeight: '400px' }}>
                             {/* Card Plan */}
-                            {editView ? (
-                                <Grid item xs={6}><ItineraryPlanEdit itineraryDetail={itinerary} /></Grid>
+                            {editId === itinerary._id ? (
+                                <Grid item xs={6}><ItineraryPlanEdit itineraryDetail={itinerary} onCancelEdit={() => handleEditClicked(itinerary._id)} /></Grid>
                             ) : (
                                 <Grid item xs={6}><ItineraryPlan itineraryDetail={itinerary} /></Grid>
                             )}

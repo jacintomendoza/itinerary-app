@@ -7,14 +7,15 @@ import useItineraryPlanContext from '../../../hooks/use-hooks-context';
 
 const moment = require('moment');
 
-function ItineraryPlanEdit({ itineraryDetail }) {
+function ItineraryPlanEdit({ itineraryDetail, onCancelEdit }) {
 
-    const { editItineraryPlanById, getItineraryDetail } = useItineraryPlanContext();
+    const { editItineraryPlanById, getItineraryDetail, updateItineraryDetailById } = useItineraryPlanContext();
 
     const handleSave = async (e) => {
         e.preventDefault();
         await editItineraryPlanById(itineraryDetail._id, itineraryDetail);
         await getItineraryDetail();
+        onCancelEdit();
     };
 
     return (
@@ -25,6 +26,15 @@ function ItineraryPlanEdit({ itineraryDetail }) {
                 <Typography color="text.secondary" component="div">
                     <form onSubmit={handleSave}>
                         <div style={{ padding: '0px 5px 0px 5px', background: 'green' }}>
+                            <TextField
+                                label="Title"
+                                defaultValue={itineraryDetail.title}
+                                variant="standard"
+                                fullWidth
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                                    itineraryDetail.title = value;
+                                }} />
                             {itineraryDetail.days.map((day, dayIndex) => (
                                 <div key={day.id}>
                                     <Box component='div' textAlign="left" sx={{ border: '1px solid grey', backgroundColor: 'yellow' }}>
@@ -70,6 +80,12 @@ function ItineraryPlanEdit({ itineraryDetail }) {
                                                     itineraryDetail.days[dayIndex].plans[planIndex].description = value;
                                                 }}
                                             />
+                                            <Button
+                                                variant="outlined"
+                                                color="error"
+                                                onClick={() => {
+                                                    updateItineraryDetailById(itineraryDetail._id, itineraryDetail.days[dayIndex].plans.splice(planIndex, 1))
+                                                }}>Delete Plan</Button>
                                         </div>
                                     ))}
                                 </div>

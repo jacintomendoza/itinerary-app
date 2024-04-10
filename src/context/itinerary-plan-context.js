@@ -43,22 +43,36 @@ function Provider({ children }) {
     };
 
     // EDIT
-    const updateItineraryPlan = (newPlan) => {
-        setItineraryDetail(newPlan);
+    const updateItineraryDetailById = async (id, newPlan) => {
+        try {
+            await axios.put(`https://itinerary-app.netlify.app/api/itinerary/${id}`);
+            setItineraryDetail(prevItineraryDetail => {
+                const updatedItineraryDetail = prevItineraryDetail.map(plan => {
+                    if (plan._id === id) {
+                        return { ...plan, ...newPlan };
+                    } else {
+                        return plan;
+                    }
+                });
+                return updatedItineraryDetail;
+            });
+        } catch (error) {
+            console.error('Error updating itinerary plan:', error);
+        }
     };
 
     // DELETE
-    const deleteItineraryPlanById = async (id) => {
+    const deleteItineraryDetailById = async (id) => {
         try {
             await axios.delete(`https://itinerary-app.netlify.app/api/itinerary/${id}`);
-            setItineraryDetail(null);
+            setItineraryDetail(prevItineraryDetail => prevItineraryDetail.filter(plan => plan._id !== id));
         } catch (error) {
             console.error('Error deleting itinerary plan:', error);
         }
     };
 
     return (
-        <ItineraryPlanContext.Provider value={{ itineraryDetail, updateItineraryPlan, editItineraryPlanById, deleteItineraryPlanById, addItineraryPlan, getItineraryDetail }}>
+        <ItineraryPlanContext.Provider value={{ itineraryDetail, updateItineraryDetailById, editItineraryPlanById, deleteItineraryDetailById, addItineraryPlan, getItineraryDetail }}>
             {children}
         </ItineraryPlanContext.Provider>
     );
