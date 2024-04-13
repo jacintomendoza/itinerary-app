@@ -9,7 +9,7 @@ const moment = require('moment');
 
 function ItineraryPlanEdit({ itinerary, onCancelEdit }) {
 
-    const { updateItineraryById } = useItineraryContext();
+    const { updateItineraryById, localUpdateItineraryById } = useItineraryContext();
 
     const handleSave = async (e) => {
         e.preventDefault();
@@ -19,17 +19,17 @@ function ItineraryPlanEdit({ itinerary, onCancelEdit }) {
 
     const handleAddDay = () => {
         let updateditinerary = itinerary.days.push({ date: dayjs().toISOString(), location: '', plans: [] });
-        updateItineraryById(itinerary._id, updateditinerary);
+        localUpdateItineraryById(itinerary._id, updateditinerary);
     };
 
     const handleAddPlan = (dayIndex) => {
         let updateditinerary = itinerary.days[dayIndex].plans.push({ time: '', description: '' });
-        updateItineraryById(itinerary._id, updateditinerary);
+        localUpdateItineraryById(itinerary._id, updateditinerary);
     };
 
     const handleDeletePlan = (dayIndex, planIndex) => {
         let updateditinerary = itinerary.days[dayIndex].plans.splice(planIndex, 1)
-        updateItineraryById(itinerary._id, updateditinerary);
+        localUpdateItineraryById(itinerary._id, updateditinerary);
     };
 
     return (
@@ -50,7 +50,7 @@ function ItineraryPlanEdit({ itinerary, onCancelEdit }) {
                                     itinerary.title = value;
                                 }} />
                             {itinerary.days.map((day, dayIndex) => (
-                                <div key={day.id}>
+                                <div key={day._id}>
                                     <Box component='div' textAlign="left" sx={{ border: '1px solid grey', backgroundColor: 'yellow' }}>
                                         <div className="container" style={{ display: 'flex', justifyContent: 'space-between' }}>
                                             <LocalizationProvider dateAdapter={AdapterDayjs}>

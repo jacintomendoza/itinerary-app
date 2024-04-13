@@ -10,10 +10,19 @@ function Provider({ children }) {
         fetchItinerary();
     }, []);
 
+    // CREATE
+    const addItinerary = async (newItinerary) => {
+        try {
+            await axios.post('https://itinerary-app.netlify.app/api/itinerary/postItinerary', newItinerary);
+        } catch (error) {
+            console.error('Error creating new itinerary:', error);
+        }
+    }
+
     // READ
     const fetchItinerary = async () => {
         try {
-            const response = await axios.get('https://itinerary-app.netlify.app/api/itinerary');
+            const response = await axios.get('https://itinerary-app.netlify.app/api/itinerary/getItinerary');
             setItineraryArray(response.data);
         } catch (error) {
             console.error('Error fetching itinerary:', error);
@@ -24,19 +33,10 @@ function Provider({ children }) {
         await fetchItinerary();
     };
 
-    // CREATE
-    const addItinerary = async (newItinerary) => {
-        try {
-            await axios.post('https://itinerary-app.netlify.app/api/itinerary', newItinerary);
-        } catch (error) {
-            console.error('Error creating new itinerary:', error);
-        }
-    }
-
     // UPDATE
     const updateItineraryById = async (id, updatedItinerary) => {
         try {
-            await axios.put(`https://itinerary-app.netlify.app/api/itinerary/${id}`, updatedItinerary);
+            await axios.put(`https://itinerary-app.netlify.app/api/itinerary/putItineraryById/${id}`, updatedItinerary);
             setItineraryArray(prevItinerary => {
                 const updatedItineraryArray = prevItinerary.map(itini => {
                     if (itini._id === id) {
@@ -52,10 +52,23 @@ function Provider({ children }) {
         }
     };
 
+    const localUpdateItineraryById = async (id, updatedItinerary) => {
+        setItineraryArray(prevItinerary => {
+            const updatedItineraryArray = prevItinerary.map(itini => {
+                if (itini._id === id) {
+                    return { ...itini, ...updatedItinerary };
+                } else {
+                    return itini;
+                }
+            });
+            return updatedItineraryArray;
+        });
+    };
+
     // DELETE
     const deleteItineraryById = async (id) => {
         try {
-            await axios.delete(`https://itinerary-app.netlify.app/api/itinerary/${id}`);
+            await axios.delete(`https://itinerary-app.netlify.app/api/itinerary/deleteItineraryById/${id}`);
             setItineraryArray(prevItinerary => prevItinerary.filter(itini => itini._id !== id));
         } catch (error) {
             console.error('Error deleting itinerary:', error);
@@ -63,7 +76,7 @@ function Provider({ children }) {
     };
 
     return (
-        <ItineraryContext.Provider value={{ itineraryArray, updateItineraryById, deleteItineraryById, addItinerary, getItineraryArray }}>
+        <ItineraryContext.Provider value={{ itineraryArray, updateItineraryById, deleteItineraryById, addItinerary, getItineraryArray, localUpdateItineraryById }}>
             {children}
         </ItineraryContext.Provider>
     );

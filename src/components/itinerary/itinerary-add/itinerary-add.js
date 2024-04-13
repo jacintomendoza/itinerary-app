@@ -38,7 +38,7 @@ function ItineraryAdd({ closeAddClicked }) {
         e.preventDefault();
         console.log("Loading here");
         try {
-            await addItinerary({ title: itineraryTitle, itinerary });
+            await addItinerary({ title: itineraryTitle, ...itinerary });
             setItineraryTitle('');
             setItinerary([]);
             await getItineraryArray();
