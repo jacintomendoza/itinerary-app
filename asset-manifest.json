@@ -1,0 +1,10 @@
+{
+  "files": {
+    "main.js": "/itinerary-app/static/js/main.3efa2ec6.js",
+    "index.html": "/itinerary-app/index.html",
+    "main.3efa2ec6.js.map": "/itinerary-app/static/js/main.3efa2ec6.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.3efa2ec6.js"
+  ]
+}
