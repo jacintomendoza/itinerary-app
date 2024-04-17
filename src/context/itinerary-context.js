@@ -12,12 +12,8 @@ function Provider({ children }) {
 
     // CREATE
     const addItinerary = async (newItinerary) => {
-        try {
-            await axios.post('https://itinerary-app.netlify.app/api/itinerary/postItinerary', newItinerary);
-        } catch (error) {
-            console.error('Error creating new itinerary:', error);
-        }
-    }
+        return axios.post('https://itinerary-app.netlify.app/api/itinerary/postItineraryBAD', newItinerary);
+    };
 
     // READ
     const fetchItinerary = async () => {

@@ -11,17 +11,17 @@ function ItineraryPlan({ itinerary }) {
                 <Typography color="text.secondary" component="div">
                     <div style={{ padding: '0px 5px 0px 5px', background: 'green' }}>
                         {itinerary.days.map((day) => (
-                            <div key={day.id}>
+                            <div key={day._id}>
                                 <Box component='div' textAlign="left" sx={{ border: '1px solid grey', backgroundColor: 'yellow' }}>
                                     <div className="container" style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                        <div>{moment(day.date).format("M/DD - ddd")}</div>
-                                        <div> {day.location}</div>
+                                        <strong>{moment(day.date).format("M/DD - ddd")}</strong>
+                                        <strong> {day.location}</strong>
                                     </div>
                                 </Box>
                                 {day.plans.map((plan) => (
-                                    <div key={plan.time}>
-                                        {plan.time} - {plan.description}
-                                    </div>
+                                    <Typography key={plan.time} component="div" sx={{ whiteSpace: 'pre-line' }}>
+                                        <strong>{plan.time}</strong> - {plan.description}
+                                    </Typography >
                                 ))}
                             </div>
                         ))}

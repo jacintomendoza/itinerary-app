@@ -73,7 +73,7 @@ function ItineraryPlanEdit({ itinerary, onCancelEdit }) {
                                         </div>
                                     </Box>
                                     {day.plans.map((plan, planIndex) => (
-                                        <div key={plan.time}>
+                                        <div key={plan._id}>
                                             <TextField
                                                 label="Time"
                                                 defaultValue={plan.time}
@@ -89,6 +89,7 @@ function ItineraryPlanEdit({ itinerary, onCancelEdit }) {
                                                 defaultValue={plan.description}
                                                 variant="standard"
                                                 fullWidth
+                                                multiline
                                                 onChange={(e) => {
                                                     const value = e.target.value;
                                                     itinerary.days[dayIndex].plans[planIndex].description = value;

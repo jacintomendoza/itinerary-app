@@ -35,7 +35,6 @@ function Itinerary() {
 
 
     const onAddClicked = () => {
-        console.log(itineraryArray);
         setAddView(!addView);
     }
 
@@ -80,10 +79,10 @@ function Itinerary() {
             </Grid>
             {Array.isArray(itineraryArray) && itineraryArray.map((itinerary) => (
                 <Card key={itinerary._id} style={{ backgroundColor: 'grey' }} sx={{ mt: 4 }}>
-                    <CardContent style={{ height: '100%' }}>
+                    <CardContent style={{ height: '100%', position: 'relative' }}>
+                        <EditIcon style={{ cursor: 'pointer', position: 'absolute', top: 5, right: 5 }} onClick={() => handleEditClicked(itinerary._id)} />
+                        <DeleteIcon style={{ cursor: 'pointer', position: 'absolute', top: 5, right: 25 }} onClick={() => handleDeleteClicked(itinerary._id)} />
                         <Typography variant="h2" component="div" align='center' gutterBottom>{itinerary.title}
-                            <EditIcon style={{ cursor: 'pointer' }} onClick={() => handleEditClicked(itinerary._id)} />
-                            <DeleteIcon style={{ cursor: 'pointer' }} onClick={() => handleDeleteClicked(itinerary._id)} />
                         </Typography>
                         <Grid container spacing={2} alignItems='stretch' style={{ minHeight: '400px' }}>
                             {/* Card Plan */}

@@ -2,11 +2,14 @@ import { Card, CardContent, Typography, TextField, Button, Divider, Box, IconBut
 import { Close } from '@mui/icons-material';
 import { useState } from 'react';
 import useItineraryContext from '../../../hooks/use-hooks-context';
+import { LoadingButton } from '@mui/lab';
 
 function ItineraryAdd({ closeAddClicked }) {
     const { addItinerary, getItineraryArray } = useItineraryContext();
     const [itineraryTitle, setItineraryTitle] = useState('');
     const [itinerary, setItinerary] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
     const handleAddDay = () => {
         setItinerary([...itinerary, { day: `Day ${itinerary.length + 1}`, plans: [] }]);
@@ -36,16 +39,17 @@ function ItineraryAdd({ closeAddClicked }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Loading here");
+        setErrorMessage('');
+        setIsLoading(true);
         try {
             await addItinerary({ title: itineraryTitle, ...itinerary });
             setItineraryTitle('');
             setItinerary([]);
             await getItineraryArray();
         } catch (error) {
-            console.error('Error adding itinerary plan:', error);
+            setErrorMessage('Error adding itinerary plan:' + error.message);
         } finally {
-            console.log("Finish here");
+            setIsLoading(false);
         }
     };
 
@@ -80,6 +84,7 @@ function ItineraryAdd({ closeAddClicked }) {
                                         value={plan.description}
                                         onChange={(e) => handlePlanChange(dayIndex, planIndex, 'description', e.target.value)}
                                         fullWidth
+                                        multiline
                                         margin="normal"
                                     />
                                     <TextField
@@ -105,9 +110,12 @@ function ItineraryAdd({ closeAddClicked }) {
                     ))}
                     <Button onClick={handleAddDay}>Add Day</Button>
                     <Box mt={2}>
-                        <Button type="submit" variant="contained" color="primary">
+                        <LoadingButton type="submit" variant="contained" color="primary" loading={isLoading}>
                             Submit
-                        </Button>
+                        </LoadingButton >
+                        <Typography sx={{ mt: 1 }} variant="body2" color="error" gutterBottom>
+                            {errorMessage}
+                        </Typography>
                     </Box>
                 </form>
             </CardContent>
