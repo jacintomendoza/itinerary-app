@@ -16,6 +16,7 @@ function Itinerary() {
     const [editId, setEditId] = useState(null);
     const [deleteModal, setDeleteModal] = useState(false);
     const [deleteId, setDeleteId] = useState(null);
+    const [selectedPlanUrls, setSelectedPlanUrls] = useState({});
 
     const handleEditClicked = (id) => {
         setEditId(id === editId ? null : id);
@@ -33,6 +34,12 @@ function Itinerary() {
 
     const handleCloseModal = () => setDeleteModal(false);
 
+    const handleUrlSelect = (itineraryId, url) => {
+        setSelectedPlanUrls(prevState => ({
+            ...prevState,
+            [itineraryId]: url
+        }));
+    };
 
     const onAddClicked = () => {
         setAddView(!addView);
@@ -91,11 +98,11 @@ function Itinerary() {
                                     <ItineraryPlanEdit itinerary={itinerary} onCancelEdit={() => handleEditClicked(itinerary._id)} />
 
                                 ) : (
-                                    <ItineraryPlan itinerary={itinerary} />
+                                    <ItineraryPlan itinerary={itinerary} onPlanUrlSelect={(url) => handleUrlSelect(itinerary._id, url)} />
                                 )}
                             </Grid>
                             {/* Card Pictures */}
-                            <Grid item xs={6}><ItineraryPictures /></Grid>
+                            <Grid item xs={6}><ItineraryPictures selectedPlanUrl={selectedPlanUrls[itinerary._id]} /></Grid>
                         </Grid>
                     </CardContent>
                 </Card>

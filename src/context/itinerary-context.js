@@ -12,7 +12,7 @@ function Provider({ children }) {
 
     // CREATE
     const addItinerary = async (newItinerary) => {
-        return axios.post('https://itinerary-app.netlify.app/api/itinerary/postItineraryBAD', newItinerary);
+        return axios.post('https://itinerary-app.netlify.app/api/itinerary/postItinerary', newItinerary);
     };
 
     // READ

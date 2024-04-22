@@ -1,7 +1,15 @@
 import { Card, CardContent, Typography, Box } from '@mui/material';
+import { useState } from 'react';
+
 const moment = require('moment');
 
-function ItineraryPlan({ itinerary }) {
+function ItineraryPlan({ itinerary, onPlanUrlSelect }) {
+    const [selectedPlan, setSelectedPlan] = useState(null);
+
+    const handlePlanClick = (plan) => {
+        setSelectedPlan(plan);
+        onPlanUrlSelect(plan.url);
+    };
 
     return (
         <Card style={{ height: '100%' }}>
@@ -19,7 +27,11 @@ function ItineraryPlan({ itinerary }) {
                                     </div>
                                 </Box>
                                 {day.plans.map((plan) => (
-                                    <Typography key={plan.time} component="div" sx={{ whiteSpace: 'pre-line' }}>
+                                    <Typography key={plan.time} component="div" sx={{
+                                        whiteSpace: 'pre-line',
+                                        cursor: 'pointer',
+                                        backgroundColor: selectedPlan === plan ? 'lightblue' : 'inherit'
+                                    }} onClick={() => handlePlanClick(plan)}>
                                         <strong>{plan.time}</strong> - {plan.description}
                                     </Typography >
                                 ))}

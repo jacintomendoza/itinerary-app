@@ -18,18 +18,18 @@ function ItineraryPlanEdit({ itinerary, onCancelEdit }) {
     };
 
     const handleAddDay = () => {
-        let updateditinerary = itinerary.days.push({ date: dayjs().toISOString(), location: '', plans: [] });
-        localUpdateItineraryById(itinerary._id, updateditinerary);
+        let updatedItinerary = itinerary.days.push({ date: dayjs().toISOString(), location: '', plans: [] });
+        localUpdateItineraryById(itinerary._id, updatedItinerary);
     };
 
     const handleAddPlan = (dayIndex) => {
-        let updateditinerary = itinerary.days[dayIndex].plans.push({ time: '', description: '' });
-        localUpdateItineraryById(itinerary._id, updateditinerary);
+        let updatedItinerary = itinerary.days[dayIndex].plans.push({ time: '', description: '', url: '' });
+        localUpdateItineraryById(itinerary._id, updatedItinerary);
     };
 
     const handleDeletePlan = (dayIndex, planIndex) => {
-        let updateditinerary = itinerary.days[dayIndex].plans.splice(planIndex, 1)
-        localUpdateItineraryById(itinerary._id, updateditinerary);
+        let updatedItinerary = itinerary.days[dayIndex].plans.splice(planIndex, 1)
+        localUpdateItineraryById(itinerary._id, updatedItinerary);
     };
 
     return (
@@ -93,6 +93,16 @@ function ItineraryPlanEdit({ itinerary, onCancelEdit }) {
                                                 onChange={(e) => {
                                                     const value = e.target.value;
                                                     itinerary.days[dayIndex].plans[planIndex].description = value;
+                                                }}
+                                            />
+                                            <TextField
+                                                label="URL"
+                                                defaultValue={plan.url}
+                                                variant="standard"
+                                                fullWidth
+                                                onChange={(e) => {
+                                                    const value = e.target.value;
+                                                    itinerary.days[dayIndex].plans[planIndex].url = value;
                                                 }}
                                             />
                                             <Button

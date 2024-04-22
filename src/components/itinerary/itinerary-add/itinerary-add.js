@@ -3,6 +3,7 @@ import { Close } from '@mui/icons-material';
 import { useState } from 'react';
 import useItineraryContext from '../../../hooks/use-hooks-context';
 import { LoadingButton } from '@mui/lab';
+import dayjs from 'dayjs';
 
 function ItineraryAdd({ closeAddClicked }) {
     const { addItinerary, getItineraryArray } = useItineraryContext();
@@ -12,7 +13,7 @@ function ItineraryAdd({ closeAddClicked }) {
     const [errorMessage, setErrorMessage] = useState('');
 
     const handleAddDay = () => {
-        setItinerary([...itinerary, { day: `Day ${itinerary.length + 1}`, plans: [] }]);
+        setItinerary([...itinerary, { date: dayjs().toISOString(), location: '', plans: [] }]);
     };
 
     const handleAddPlan = (dayIndex) => {
@@ -26,12 +27,10 @@ function ItineraryAdd({ closeAddClicked }) {
     const handlePlanChange = (dayIndex, planIndex, field, value) => {
         setItinerary((prevItinerary) => {
             const newItinerary = [...prevItinerary];
-            if (field === 'description') {
-                newItinerary[dayIndex].plans[planIndex].description = value;
-            } else if (field === 'time') {
-                newItinerary[dayIndex].plans[planIndex].time = value;
-            } else if (field === 'url') {
-                newItinerary[dayIndex].plans[planIndex].url = value;
+            if (field === 'description' || field === 'time' || field === 'url') {
+                newItinerary[dayIndex].plans[planIndex][field] = value;
+            } else if (field === 'location' || field === 'date') {
+                newItinerary[dayIndex][field] = value;
             }
             return newItinerary;
         });
@@ -42,7 +41,7 @@ function ItineraryAdd({ closeAddClicked }) {
         setErrorMessage('');
         setIsLoading(true);
         try {
-            await addItinerary({ title: itineraryTitle, ...itinerary });
+            await addItinerary({ title: itineraryTitle, days: itinerary });
             setItineraryTitle('');
             setItinerary([]);
             await getItineraryArray();
@@ -73,7 +72,21 @@ function ItineraryAdd({ closeAddClicked }) {
                     {itinerary.map((day, dayIndex) => (
                         <div key={dayIndex}>
                             <Box component='div' textAlign="left" sx={{ border: '1px solid grey', backgroundColor: 'yellow' }}>
-                                <Typography variant="h5">{day.day}</Typography>
+                                <TextField
+                                    label="Location"
+                                    value={day.location}
+                                    onChange={(e) => handlePlanChange(dayIndex, null, 'location', e.target.value)}
+                                    fullWidth
+                                    margin="normal"
+                                />
+                                <TextField
+                                    label="Date"
+                                    type="date"
+                                    value={day.date}
+                                    onChange={(e) => handlePlanChange(dayIndex, null, 'date', e.target.value)}
+                                    fullWidth
+                                    margin="normal"
+                                />
                             </Box>
                             <Divider />
                             {day.plans.map((plan, planIndex) => (

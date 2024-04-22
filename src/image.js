@@ -1,12 +1,11 @@
 import { useState } from 'react';
-import storage from './firebase/firebase'; // Ensure this path is correct
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import storage from './firebase/firebase';
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 function Image() {
     const [image, setImage] = useState('');
 
     const upload = async () => {
-        // Check if image is selected
         if (image) {
             try {
                 // Create a storage reference
@@ -41,7 +40,6 @@ function Image() {
                         // Handle successful uploads on complete
                         const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
                         console.log('File available at', downloadURL);
-                        // You can save the download URL to your database or use it as needed
                     }
                 );
             } catch (error) {
