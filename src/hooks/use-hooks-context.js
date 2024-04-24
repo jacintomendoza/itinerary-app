@@ -1,8 +1,11 @@
 import { useContext } from "react";
 import { ItineraryContext } from "../context/itinerary-context";
+import { MediaContext } from "../context/media-context";
 
-function useItineraryContext() {
+export function useItineraryContext() {
     return useContext(ItineraryContext);
 }
 
-export default useItineraryContext;
+export function useMediaContext() {
+    return useContext(MediaContext);
+}

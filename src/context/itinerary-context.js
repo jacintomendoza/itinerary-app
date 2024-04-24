@@ -78,4 +78,5 @@ function Provider({ children }) {
     );
 }
 
-export { Provider, ItineraryContext };
+export const ItineraryProvider = Provider;
+export { ItineraryContext, Provider };

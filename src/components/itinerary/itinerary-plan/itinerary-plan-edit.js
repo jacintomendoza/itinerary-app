@@ -1,15 +1,16 @@
-import { Card, CardContent, Typography, TextField, Box, Button } from '@mui/material';
+import { Card, CardContent, Typography, TextField, Box, Button, InputBase, Grid, Input } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from 'dayjs';
-import useItineraryContext from '../../../hooks/use-hooks-context';
+import { useItineraryContext } from '../../../hooks/use-hooks-context';
+import { useMediaContext } from '../../../hooks/use-hooks-context';
 
 const moment = require('moment');
 
 function ItineraryPlanEdit({ itinerary, onCancelEdit }) {
-
     const { updateItineraryById, localUpdateItineraryById } = useItineraryContext();
+    const { uploadMedia } = useMediaContext();
 
     const handleSave = async (e) => {
         e.preventDefault();
@@ -18,18 +19,44 @@ function ItineraryPlanEdit({ itinerary, onCancelEdit }) {
     };
 
     const handleAddDay = () => {
-        let updatedItinerary = itinerary.days.push({ date: dayjs().toISOString(), location: '', plans: [] });
+        const newDay = { date: dayjs().toISOString(), location: '', plans: [] };
+        const updatedItinerary = { ...itinerary };
+        updatedItinerary.days.push(newDay);
         localUpdateItineraryById(itinerary._id, updatedItinerary);
     };
 
-    const handleAddPlan = (dayIndex) => {
-        let updatedItinerary = itinerary.days[dayIndex].plans.push({ time: '', description: '', url: '' });
+    const handleAddPlan = (dayIndex, planIndex) => {
+        const updatedItinerary = { ...itinerary };
+        const updatedPlans = [...updatedItinerary.days[dayIndex].plans];
+        updatedPlans.splice(planIndex, 0, { time: '', description: '', url: '' });
+        updatedItinerary.days[dayIndex] = {
+            ...updatedItinerary.days[dayIndex],
+            plans: updatedPlans,
+        };
         localUpdateItineraryById(itinerary._id, updatedItinerary);
     };
 
     const handleDeletePlan = (dayIndex, planIndex) => {
-        let updatedItinerary = itinerary.days[dayIndex].plans.splice(planIndex, 1)
+        const updatedItinerary = { ...itinerary };
+        const updatedPlans = [...updatedItinerary.days[dayIndex].plans];
+        updatedPlans.splice(planIndex, 1);
+        updatedItinerary.days[dayIndex] = {
+            ...updatedItinerary.days[dayIndex],
+            plans: updatedPlans,
+        };
         localUpdateItineraryById(itinerary._id, updatedItinerary);
+    };
+
+    const handleUpload = async (e, dayIndex, planIndex) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        try {
+            const mediaInfo = await uploadMedia(file);
+            itinerary.days[dayIndex].plans[planIndex].url = mediaInfo.downloadURL;
+            itinerary.days[dayIndex].plans[planIndex].fileName = mediaInfo.filename;
+        } catch (error) {
+            console.error('Error uploading media:', error);
+        }
     };
 
     return (
@@ -74,6 +101,12 @@ function ItineraryPlanEdit({ itinerary, onCancelEdit }) {
                                     </Box>
                                     {day.plans.map((plan, planIndex) => (
                                         <div key={plan._id}>
+                                            <Button
+                                                variant="contained"
+                                                color="primary"
+                                                onClick={() => handleAddPlan(dayIndex, planIndex)}>
+                                                Add Plan Above
+                                            </Button>
                                             <TextField
                                                 label="Time"
                                                 defaultValue={plan.time}
@@ -95,16 +128,18 @@ function ItineraryPlanEdit({ itinerary, onCancelEdit }) {
                                                     itinerary.days[dayIndex].plans[planIndex].description = value;
                                                 }}
                                             />
-                                            <TextField
-                                                label="URL"
-                                                defaultValue={plan.url}
-                                                variant="standard"
-                                                fullWidth
-                                                onChange={(e) => {
-                                                    const value = e.target.value;
-                                                    itinerary.days[dayIndex].plans[planIndex].url = value;
-                                                }}
-                                            />
+                                            <div>
+                                                <label htmlFor={`upload-media-${dayIndex}-${planIndex}`}>
+                                                    Upload Media:
+                                                </label>
+                                                <Input
+                                                    type="file"
+                                                    id={`upload-media-${dayIndex}-${planIndex}`}
+                                                    onChange={(e) => handleUpload(e, dayIndex, planIndex)}
+                                                />
+                                                <span>{plan.fileName}</span>
+                                            </div>
+
                                             <Button
                                                 variant="contained"
                                                 color="error"
@@ -116,8 +151,8 @@ function ItineraryPlanEdit({ itinerary, onCancelEdit }) {
                                     <Button
                                         variant="contained"
                                         color="primary"
-                                        onClick={() => handleAddPlan(dayIndex)}>
-                                        Add Plan
+                                        onClick={() => handleAddPlan(dayIndex, day.plans.length)}>
+                                        Add Plan Below
                                     </Button>
                                 </div>
                             ))}

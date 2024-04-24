@@ -1,7 +1,7 @@
 import { Card, CardContent, Typography, TextField, Button, Divider, Box, IconButton } from '@mui/material';
 import { Close } from '@mui/icons-material';
 import { useState } from 'react';
-import useItineraryContext from '../../../hooks/use-hooks-context';
+import { useItineraryContext } from '../../../hooks/use-hooks-context';
 import { LoadingButton } from '@mui/lab';
 import dayjs from 'dayjs';
 

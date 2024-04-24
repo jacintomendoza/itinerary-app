@@ -3,7 +3,7 @@ import ItineraryPlan from './itinerary-plan/itinerary-plan';
 import ItineraryPictures from './itinerary-pictures/itinerary-pictures';
 import ItineraryAdd from './itinerary-add/itinerary-add';
 import ItineraryPlanEdit from './itinerary-plan/itinerary-plan-edit';
-import useItineraryContext from '../../hooks/use-hooks-context';
+import { useItineraryContext } from '../../hooks/use-hooks-context';
 import { useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
