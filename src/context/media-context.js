@@ -1,5 +1,5 @@
 import React, { createContext, useState } from 'react';
-import { ref, uploadBytesResumable, getDownloadURL, getMetadata } from 'firebase/storage';
+import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebase/storage';
 import storage from '../firebase/firebase';
 
 const MediaContext = createContext();
@@ -23,7 +23,7 @@ function Provider({ children }) {
                     },
                     (error) => {
                         setUploadError(error);
-                        reject(error); // Reject the promise on error
+                        reject(error);
                     },
                     async () => {
                         try {
@@ -39,14 +39,23 @@ function Provider({ children }) {
                 );
             } catch (error) {
                 setUploadError(error);
-                reject(error); // Reject the promise if an error occurs
+                reject(error);
             }
         });
     };
 
+    const deleteMedia = async (fileUrl) => {
+        try {
+            const fileRef = ref(storage, fileUrl);
+            await deleteObject(fileRef);
+            console.log('File deleted successfully');
+        } catch (error) {
+            console.error('Error deleting file:', error);
+        }
+    };
 
     return (
-        <MediaContext.Provider value={{ uploadMedia, uploadProgress, uploadError }}>
+        <MediaContext.Provider value={{ uploadMedia, deleteMedia, uploadProgress, uploadError }}>
             {children}
         </MediaContext.Provider>
     );

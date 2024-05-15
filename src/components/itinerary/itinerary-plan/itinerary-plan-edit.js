@@ -1,16 +1,17 @@
-import { Card, CardContent, Typography, TextField, Box, Button, InputBase, Grid, Input } from '@mui/material';
+import { Card, CardContent, Typography, TextField, Box, Button, Input } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from 'dayjs';
 import { useItineraryContext } from '../../../hooks/use-hooks-context';
 import { useMediaContext } from '../../../hooks/use-hooks-context';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const moment = require('moment');
 
 function ItineraryPlanEdit({ itinerary, onCancelEdit }) {
     const { updateItineraryById, localUpdateItineraryById } = useItineraryContext();
-    const { uploadMedia } = useMediaContext();
+    const { uploadMedia, deleteMedia } = useMediaContext();
 
     const handleSave = async (e) => {
         e.preventDefault();
@@ -58,6 +59,20 @@ function ItineraryPlanEdit({ itinerary, onCancelEdit }) {
             console.error('Error uploading media:', error);
         }
     };
+
+    const handleDeleteMediaClicked = async (fileUrl, dayIndex, planIndex) => {
+        if (!fileUrl) return;
+        try {
+            await deleteMedia(fileUrl);
+            const updatedItinerary = { ...itinerary };
+            delete updatedItinerary.days[dayIndex].plans[planIndex].url;
+            delete updatedItinerary.days[dayIndex].plans[planIndex].fileName;
+            localUpdateItineraryById(itinerary._id, updatedItinerary);
+        } catch (error) {
+            console.error('Error deleting media:', error);
+        }
+    };
+    
 
     return (
         <Card style={{ height: '100%' }}>
@@ -138,6 +153,7 @@ function ItineraryPlanEdit({ itinerary, onCancelEdit }) {
                                                     onChange={(e) => handleUpload(e, dayIndex, planIndex)}
                                                 />
                                                 <span>{plan.fileName}</span>
+                                                <DeleteIcon style={{ cursor: 'pointer'}} onClick={() => handleDeleteMediaClicked(itinerary.days[dayIndex].plans[planIndex].url, dayIndex, planIndex)} />
                                             </div>
 
                                             <Button
