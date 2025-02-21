@@ -6,8 +6,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 function App() {
   return (
     <div>
-      <DrawerAppBar />
       <Router>
+        <DrawerAppBar />
         <Routes>
           <Route path="/welcomePage" element={<WelcomePage />} />
           <Route path="/itinerary-app" element={<Navigate to="/welcomePage"/>}/>
