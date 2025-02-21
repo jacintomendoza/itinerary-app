@@ -13,7 +13,7 @@ function Provider({ children }) {
     // CREATE
     const addItinerary = async (newItinerary) => {
         try {
-            const response = await axios.post('https://itinerary-app.netlify.app/api/itinerary/postItinerary', newItinerary);
+            await axios.post('https://itinerary-app.netlify.app/api/itinerary/postItinerary', newItinerary);
         } catch (error) {
             console.error('Error adding itinerary:', error);
         }

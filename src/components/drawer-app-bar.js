@@ -14,11 +14,13 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import { useNavigate } from 'react-router-dom';
 
 const drawerWidth = 240;
 const navItems = [];//['Home', 'About', 'Contact'];
 
 function DrawerAppBar(props) {
+    const navigate = useNavigate();
     const { window } = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -63,9 +65,10 @@ function DrawerAppBar(props) {
                     <Typography
                         variant="h6"
                         component="div"
-                        sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+                        sx={{ cursor: 'pointer' }}
+                        onClick={() => navigate('/welcomePage')}
                     >
-                        Itinerary App
+                        Itinerary
                     </Typography>
                     <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
                         {navItems.map((item) => (
