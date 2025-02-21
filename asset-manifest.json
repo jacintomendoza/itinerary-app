@@ -1,10 +1,11 @@
 {
   "files": {
-    "main.js": "/itinerary-app/static/js/main.f5fe3f99.js",
+    "main.js": "/itinerary-app/static/js/main.9106d259.js",
+    "static/media/luggageBeach.jpg": "/itinerary-app/static/media/luggageBeach.7e02e08d7fc46c586f90.jpg",
     "index.html": "/itinerary-app/index.html",
-    "main.f5fe3f99.js.map": "/itinerary-app/static/js/main.f5fe3f99.js.map"
+    "main.9106d259.js.map": "/itinerary-app/static/js/main.9106d259.js.map"
   },
   "entrypoints": [
-    "static/js/main.f5fe3f99.js"
+    "static/js/main.9106d259.js"
   ]
 }
