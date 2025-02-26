@@ -14,28 +14,45 @@ function ItineraryPlan({ itinerary, onPlanUrlSelect }) {
     return (
         <Card style={{ height: '100%' }}>
             <CardContent>
-                <Typography variant="h6" align='center'>Day & Itinerary</Typography>
+                <Typography variant="h4" align='center'>Day & Itinerary</Typography>
                 <Box borderBottom={1} />
                 <Typography color="text.secondary" component="div">
-                    <div style={{ padding: '0px 5px 0px 5px', background: 'green' }}>
+                    <div style={{ padding: '0px 5px 0px 5px' }}>
                         {itinerary.days.map((day) => (
-                            <div key={day._id}>
-                                <Box component='div' textAlign="left" sx={{ border: '1px solid grey', backgroundColor: 'yellow' }}>
-                                    <div className="container" style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <Box key={day._id} sx={{ backgroundColor: 'pink', border: '1px solid black', borderRadius: '10px', marginTop: '10px', overflow: 'hidden', padding: '5px 5px 5px 5px' }}>
+                                <div className="container" style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <Typography variant="h6" sx={{ overflow: 'hidden' }}>
                                         <strong>{moment(day.date).format("M/DD - ddd")}</strong>
-                                        <strong> {day.location}</strong>
-                                    </div>
-                                </Box>
+                                    </Typography>
+                                    <Typography variant="subtitle2" sx={{ overflow: 'hidden' }}>
+                                        {day.location}
+                                    </Typography>
+                                </div>
                                 {day.plans.map((plan) => (
-                                    <Typography key={plan.time} component="div" sx={{
-                                        whiteSpace: 'pre-line',
-                                        cursor: 'pointer',
-                                        backgroundColor: selectedPlan === plan ? 'lightblue' : 'inherit'
-                                    }} onClick={() => handlePlanClick(plan)}>
-                                        <strong>{plan.time}</strong> - {plan.description}
-                                    </Typography >
+                                    <Box
+                                        key={plan.time}
+                                        sx={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'space-between',
+                                            cursor: 'pointer',
+                                            backgroundColor: selectedPlan === plan ? 'lightblue' : 'inherit'
+                                        }}
+                                        onClick={() => handlePlanClick(plan)}
+                                    >
+                                        <Typography component="div" sx={{ whiteSpace: 'pre-line' }}>
+                                            <strong>{plan.time}</strong> - {plan.description}
+                                        </Typography>
+                                        {plan.url && (
+                                            <img
+                                                src={plan.url}
+                                                alt="Plan"
+                                                style={{ width: '40px', height: '40px', borderRadius: '5px', objectFit: 'cover' }}
+                                            />
+                                        )}
+                                    </Box>
                                 ))}
-                            </div>
+                            </Box>
                         ))}
                     </div>
                 </Typography>
