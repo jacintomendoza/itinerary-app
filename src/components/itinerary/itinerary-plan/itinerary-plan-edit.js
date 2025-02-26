@@ -85,7 +85,7 @@ function ItineraryPlanEdit({ itinerary, onCancelEdit }) {
                             <TextField
                                 label="Title"
                                 defaultValue={itinerary.title}
-                                variant="standard"
+                                variant="outlined"
                                 fullWidth
                                 onChange={(e) => {
                                     const value = e.target.value;

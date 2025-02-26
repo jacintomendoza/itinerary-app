@@ -64,7 +64,7 @@ function DrawerAppBar(props) {
                         <MenuIcon />
                     </IconButton>
                     <Box sx={{display: 'flex', flexDirection: 'row', cursor: 'pointer'}} onClick={() => navigate('/welcomePage')}>
-                        <img src={NotepadIcon} alt='logo' style={{ height: '30px', width: '30px', borderRadius: "30%" }}></img>
+                        <img src={NotepadIcon} alt='logo' style={{ height: '30px', width: '30px', borderRadius: '30%' }}></img>
                         <Typography
                             variant="h6"
                             component="div"

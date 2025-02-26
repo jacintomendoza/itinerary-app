@@ -55,7 +55,7 @@ function Itinerary() {
     }
 
     return (
-        <div style={{ paddingTop: '84px' }}>
+        <div style={{ paddingTop: '54px' }}>
 
             <Modal
                 open={deleteModal}
@@ -80,16 +80,15 @@ function Itinerary() {
                     </Box>
                 </Box>
             </Modal>
-            <Button variant="contained" color="primary" onClick={onAddClicked}>Add itinerary</Button>
             <Grid item xs={12}>
                 <Grid item xs={12}>{addContent}</Grid>
             </Grid>
             {Array.isArray(itineraryArray) && itineraryArray.map((itinerary) => (
-                <Card key={itinerary._id} style={{ backgroundColor: 'grey' }} sx={{ mt: 4 }}>
+                <Card key={itinerary._id} style={{ backgroundColor: 'rgb(28, 30, 33)' }} sx={{ mt: 4 }}>
                     <CardContent style={{ height: '100%', position: 'relative' }}>
-                        <EditIcon style={{ cursor: 'pointer', position: 'absolute', top: 5, right: 5 }} onClick={() => handleEditClicked(itinerary._id)} />
-                        <DeleteIcon style={{ cursor: 'pointer', position: 'absolute', top: 5, right: 25 }} onClick={() => handleDeleteClicked(itinerary._id)} />
-                        <Typography variant="h2" component="div" align='center' gutterBottom>{itinerary.title}
+                        <EditIcon style={{ cursor: 'pointer', position: 'absolute', top: 5, right: 5, color: 'white' }} onClick={() => handleEditClicked(itinerary._id)} />
+                        <DeleteIcon style={{ cursor: 'pointer', position: 'absolute', top: 5, right: 25, color: 'white' }} onClick={() => handleDeleteClicked(itinerary._id)} />
+                        <Typography variant="h2" component="div" align='center' style={{ color: 'white'}} gutterBottom>{itinerary.title}
                         </Typography>
                         <Grid container spacing={2} alignItems='stretch' style={{ minHeight: '400px' }}>
                             {/* Card Plan */}
@@ -107,6 +106,7 @@ function Itinerary() {
                     </CardContent>
                 </Card>
             ))}
+            <Button variant="contained" color="primary" onClick={onAddClicked}>Add itinerary</Button>
         </div>
     );
 }
