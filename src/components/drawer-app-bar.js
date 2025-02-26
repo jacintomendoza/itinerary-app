@@ -15,6 +15,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
+import NotepadIcon from './../../src/assets/images/m_notepad.jpg'
 
 const drawerWidth = 240;
 const navItems = [];//['Home', 'About', 'Contact'];
@@ -62,14 +63,15 @@ function DrawerAppBar(props) {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Typography
-                        variant="h6"
-                        component="div"
-                        sx={{ cursor: 'pointer' }}
-                        onClick={() => navigate('/welcomePage')}
-                    >
-                        Itinerary
-                    </Typography>
+                    <Box sx={{display: 'flex', flexDirection: 'row', cursor: 'pointer'}} onClick={() => navigate('/welcomePage')}>
+                        <img src={NotepadIcon} alt='logo' style={{ height: '30px', width: '30px', borderRadius: "30%" }}></img>
+                        <Typography
+                            variant="h6"
+                            component="div"
+                        >
+                            Itinerary
+                        </Typography>
+                    </Box>
                     <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
                         {navItems.map((item) => (
                             <Button key={item} sx={{ color: '#fff' }}>
