@@ -1,12 +1,12 @@
 {
   "files": {
-    "main.js": "/itinerary-app/static/js/main.dbc5e214.js",
+    "main.js": "/itinerary-app/static/js/main.87dc0a54.js",
     "static/media/m_notepad.jpg": "/itinerary-app/static/media/m_notepad.bf0d586f438dd098a87d.jpg",
     "static/media/luggageBeach.jpg": "/itinerary-app/static/media/luggageBeach.7e02e08d7fc46c586f90.jpg",
     "index.html": "/itinerary-app/index.html",
-    "main.dbc5e214.js.map": "/itinerary-app/static/js/main.dbc5e214.js.map"
+    "main.87dc0a54.js.map": "/itinerary-app/static/js/main.87dc0a54.js.map"
   },
   "entrypoints": [
-    "static/js/main.dbc5e214.js"
+    "static/js/main.87dc0a54.js"
   ]
 }
