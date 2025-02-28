@@ -1,4 +1,4 @@
-import { Card, CardContent, Typography, TextField, Box, Button, Input } from '@mui/material';
+import { Card, CardContent, Typography, TextField, Box, Button, Input, Tooltip } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -6,6 +6,7 @@ import dayjs from 'dayjs';
 import { useItineraryContext } from '../../../hooks/use-hooks-context';
 import { useMediaContext } from '../../../hooks/use-hooks-context';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const moment = require('moment');
 
@@ -72,17 +73,16 @@ function ItineraryPlanEdit({ itinerary, onCancelEdit }) {
             console.error('Error deleting media:', error);
         }
     };
-    
+
 
     return (
         <Card style={{ height: '100%' }}>
             <CardContent>
-                <Typography variant="h6" align='center'>Day & Itinerary Edit</Typography>
-                <Box borderBottom={1} />
                 <Typography color="text.secondary" component="div">
                     <form onSubmit={handleSave}>
-                        <div style={{ padding: '0px 5px 0px 5px', background: 'green' }}>
+                        <div style={{ padding: '0px 5px 0px 5px' }}>
                             <TextField
+                                sx={{ marginTop: '10px' }}
                                 label="Title"
                                 defaultValue={itinerary.title}
                                 variant="outlined"
@@ -91,88 +91,135 @@ function ItineraryPlanEdit({ itinerary, onCancelEdit }) {
                                     const value = e.target.value;
                                     itinerary.title = value;
                                 }} />
-                            {itinerary.days.map((day, dayIndex) => (
-                                <div key={day._id}>
-                                    <Box component='div' textAlign="left" sx={{ border: '1px solid grey', backgroundColor: 'yellow' }}>
-                                        <div className="container" style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                                <DatePicker
-                                                    label="Date"
-                                                    defaultValue={dayjs(moment(day.date).toDate())}
-                                                    onChange={(date) => {
-                                                        itinerary.days[dayIndex].date = date.toISOString();
-                                                    }} />
-                                            </LocalizationProvider>
-                                            <TextField
-                                                label="Location"
-                                                defaultValue={day.location}
-                                                variant="standard"
-                                                fullWidth
-                                                onChange={(e) => {
-                                                    const value = e.target.value;
-                                                    itinerary.days[dayIndex].location = value;
-                                                }} />
-                                        </div>
-                                    </Box>
-                                    {day.plans.map((plan, planIndex) => (
-                                        <div key={plan._id}>
-                                            <Button
-                                                variant="contained"
-                                                color="primary"
-                                                onClick={() => handleAddPlan(dayIndex, planIndex)}>
-                                                Add Plan Above
-                                            </Button>
-                                            <TextField
-                                                label="Time"
-                                                defaultValue={plan.time}
-                                                variant="standard"
-                                                fullWidth
-                                                onChange={(e) => {
-                                                    const value = e.target.value;
-                                                    itinerary.days[dayIndex].plans[planIndex].time = value;
-                                                }}
-                                            />
-                                            <TextField
-                                                label="Description"
-                                                defaultValue={plan.description}
-                                                variant="standard"
-                                                fullWidth
-                                                multiline
-                                                onChange={(e) => {
-                                                    const value = e.target.value;
-                                                    itinerary.days[dayIndex].plans[planIndex].description = value;
-                                                }}
-                                            />
-                                            <div>
-                                                <label htmlFor={`upload-media-${dayIndex}-${planIndex}`}>
-                                                    Upload Media:
-                                                </label>
-                                                <Input
-                                                    type="file"
-                                                    id={`upload-media-${dayIndex}-${planIndex}`}
-                                                    onChange={(e) => handleUpload(e, dayIndex, planIndex)}
-                                                />
-                                                <span>{plan.fileName}</span>
-                                                <DeleteIcon style={{ cursor: 'pointer'}} onClick={() => handleDeleteMediaClicked(itinerary.days[dayIndex].plans[planIndex].url, dayIndex, planIndex)} />
-                                            </div>
+                            <AnimatePresence>
+                                {itinerary.days.map((day, dayIndex) => (
+                                    <motion.div
+                                        key={day._id}
+                                        initial={{ opacity: 0, y: -20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: -20, transition: { duration: 0.3 } }}
+                                    >
+                                        <Box key={day._id} sx={{ backgroundColor: 'pink', border: '1px solid black', borderRadius: '10px', padding: '10px', mb: 1, mt: 1 }}>
+                                            <Box component='div' textAlign="left" sx={{ borderRadius: '10px' }}>
+                                                <Box className="container" style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                                        <DatePicker
+                                                            label="Date"
+                                                            defaultValue={dayjs(moment(day.date).toDate())}
+                                                            onChange={(date) => {
+                                                                itinerary.days[dayIndex].date = date.toISOString();
+                                                            }} />
+                                                    </LocalizationProvider>
+                                                    <TextField
+                                                        label="Location"
+                                                        defaultValue={day.location}
+                                                        variant="standard"
+                                                        fullWidth
+                                                        onChange={(e) => {
+                                                            const value = e.target.value;
+                                                            itinerary.days[dayIndex].location = value;
+                                                        }} />
+                                                </Box>
+                                            </Box>
+                                            <AnimatePresence>
 
-                                            <Button
-                                                variant="contained"
-                                                color="error"
-                                                onClick={() => handleDeletePlan(dayIndex, planIndex)}>
-                                                Delete Plan
-                                            </Button>
-                                        </div>
-                                    ))}
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        onClick={() => handleAddPlan(dayIndex, day.plans.length)}>
-                                        Add Plan Below
-                                    </Button>
-                                </div>
-                            ))}
-                            <Box sx={{ display: 'flex', justifyContent: 'center', p: 2 }}>
+                                                {day.plans.map((plan, planIndex) => (
+                                                    <motion.div
+                                                        key={plan._id}
+                                                        initial={{ opacity: 0, y: -20 }}
+                                                        animate={{ opacity: 1, y: 0 }}
+                                                        exit={{ opacity: 0, y: -20, transition: { duration: 0.5 } }}
+                                                    >
+                                                        <Tooltip title="Add Plan">
+                                                            <Button
+                                                                sx={{
+                                                                    borderRadius: '50%',
+                                                                    minWidth: '20px',
+                                                                    height: '20px',
+                                                                    padding: '0',
+                                                                    display: 'flex',
+                                                                    justifyContent: 'center',
+                                                                    alignItems: 'center',
+                                                                    position: 'relative',
+                                                                    margin: '0 auto',
+                                                                }}
+                                                                variant="contained"
+                                                                color="primary"
+                                                                onClick={() => handleAddPlan(dayIndex, planIndex)}>
+                                                                <Typography>
+                                                                    +
+                                                                </Typography>
+                                                            </Button>
+                                                        </Tooltip>
+                                                        <TextField
+                                                            label="Time"
+                                                            defaultValue={plan.time}
+                                                            variant="standard"
+                                                            fullWidth
+                                                            onChange={(e) => {
+                                                                const value = e.target.value;
+                                                                itinerary.days[dayIndex].plans[planIndex].time = value;
+                                                            }}
+                                                        />
+                                                        <TextField
+                                                            label="Description"
+                                                            defaultValue={plan.description}
+                                                            variant="standard"
+                                                            fullWidth
+                                                            multiline
+                                                            onChange={(e) => {
+                                                                const value = e.target.value;
+                                                                itinerary.days[dayIndex].plans[planIndex].description = value;
+                                                            }}
+                                                        />
+                                                        <div>
+                                                            <label htmlFor={`upload-media-${dayIndex}-${planIndex}`}>
+                                                                Upload Media:
+                                                            </label>
+                                                            <Input
+                                                                type="file"
+                                                                id={`upload-media-${dayIndex}-${planIndex}`}
+                                                                onChange={(e) => handleUpload(e, dayIndex, planIndex)}
+                                                            />
+                                                            <span>{plan.fileName}</span>
+                                                            <DeleteIcon style={{ cursor: 'pointer' }} onClick={() => handleDeleteMediaClicked(itinerary.days[dayIndex].plans[planIndex].url, dayIndex, planIndex)} />
+                                                        </div>
+
+                                                        <Button
+                                                            variant="contained"
+                                                            color="error"
+                                                            onClick={() => handleDeletePlan(dayIndex, planIndex)}>
+                                                            Delete Plan
+                                                        </Button>
+                                                    </motion.div>
+                                                ))}
+                                            </AnimatePresence>
+                                            <Tooltip title="Add Plan">
+                                                <Button
+                                                    sx={{
+                                                        borderRadius: '50%',
+                                                        minWidth: '20px',
+                                                        height: '20px',
+                                                        padding: '0',
+                                                        display: 'flex',
+                                                        justifyContent: 'center',
+                                                        alignItems: 'center',
+                                                        position: 'relative',
+                                                        margin: '0 auto',
+                                                    }}
+                                                    variant="contained"
+                                                    color="primary"
+                                                    onClick={() => handleAddPlan(dayIndex, day.plans.length)}>
+                                                    <Typography>
+                                                        +
+                                                    </Typography>
+                                                </Button>
+                                            </Tooltip>
+                                        </Box>
+                                    </motion.div>
+                                ))}
+                            </AnimatePresence>
+                            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                                 <Button
                                     variant="contained"
                                     color="primary"

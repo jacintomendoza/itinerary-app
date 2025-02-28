@@ -19,7 +19,7 @@ function ItineraryPlan({ itinerary, onPlanUrlSelect }) {
                 <Typography color="text.secondary" component="div">
                     <div style={{ padding: '0px 5px 0px 5px' }}>
                         {itinerary.days.map((day) => (
-                            <Box key={day._id} sx={{ backgroundColor: 'pink', border: '1px solid black', borderRadius: '10px', marginTop: '10px', overflow: 'hidden', padding: '5px 5px 5px 5px' }}>
+                            <Box key={day._id} sx={{ backgroundColor: 'pink', border: '1px solid black', borderRadius: '10px', mt: 1, mb: 1, overflow: 'hidden', padding: '5px 5px 5px 5px' }}>
                                 <div className="container" style={{ display: 'flex', justifyContent: 'space-between' }}>
                                     <Typography variant="h6" sx={{ overflow: 'hidden' }}>
                                         <strong>{moment(day.date).format("M/DD - ddd")}</strong>
